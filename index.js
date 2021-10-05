@@ -1,14 +1,29 @@
-const http = require('http');
+const express = require('express');
+const dotenv = require('dotenv');
+const expressEjsLayouts = require('express-ejs-layouts');
 
-const hostname = '127.0.0.1';
-const port = 3000;
+dotenv.config({ path: './config/.ENV' });
 
-const server = http.createServer((req, res) => {
-	res.statusCode = 200;
-	res.setHeader('Content-Type', 'text/plain');
-	res.end('Hello World');
-});
+const app = express();
 
-server.listen(port, hostname, () => {
-	console.log(`Server running at http://${hostname}:${port}/`);
+const PORT = process.env.PORT || 3000;
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+app.use(expressEjsLayouts);
+
+app.set('layouts', './layouts/main'); //--Setting Layouts--\\
+
+//--Routes Section--\\
+const homePage = require('./routes/home');
+app.use('/', homePage);
+
+app.listen(PORT, err => {
+	if (err) {
+		console.log('Error in running server');
+		return;
+	}
+	console.log(
+		`Server running in ${process.env.NODE_ENV} mode on port ${PORT} at http://${process.env.HOSTNAME}:${PORT}/`
+	);
 });
