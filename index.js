@@ -12,7 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(expressEjsLayouts);
 
-app.set('layouts', './layouts/main'); //--Setting Layouts--\\
+app.set('layout', './layouts/main');
+app.set('view engine', 'ejs');
 
 //--Routes Section--\\
 const homePage = require('./routes/home');
@@ -24,6 +25,6 @@ app.listen(PORT, err => {
 		return;
 	}
 	console.log(
-		`Server running in ${process.env.NODE_ENV} mode on port ${PORT} at http://${process.env.HOSTNAME}:${PORT}/`
+		`Server running in ${process.env.NODE_ENV} mode on port ${PORT} => http://${process.env.HOSTNAME}:${PORT}/`
 	);
 });
